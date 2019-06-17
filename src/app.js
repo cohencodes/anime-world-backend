@@ -9,9 +9,9 @@ const usersRouter = require('./users/users-router');
 
 const app = express();
 
-const morganOption = NODE_ENV === 'production' ? 'tiny' : 'common';
+const morganSetting = NODE_ENV === 'production' ? 'tiny' : 'common';
 
-app.use(morgan(morganOption));
+app.use(morgan(morganSetting));
 app.use(cors());
 app.use(helmet());
 
