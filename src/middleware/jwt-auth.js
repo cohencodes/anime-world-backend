@@ -1,7 +1,7 @@
 const AuthService = require('../auth/auth-service');
 
 const requireAuth = (req, res, next) => {
-  const authToken = req.get('Authorization') || '';
+  const authToken = req.get('authorization') || '';
 
   let bearerToken;
 

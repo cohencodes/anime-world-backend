@@ -1,10 +1,11 @@
 const xss = require('xss');
 
 const watchListService = {
-  insertShow(title, image) {
-    return db('anime_watchlist')
-      .insert({ title, image })
-      .where(user_id);
+  insertShow(db, newEntry) {
+    return db('anime_watchlists')
+      .insert(newEntry)
+      .returning('*')
+      .then(([show]) => show);
   },
   serializeShow(show) {
     return {
