@@ -14,15 +14,22 @@ const watchListService = {
       .returning('*')
       .then(([show]) => show);
   },
-  deleteShow(db, id) {
+  deleteShow(db, data) {
     return db('anime_watchlists')
-      .where({ id })
+      .where('user_id', data.user_id)
+      .where('title', data.title)
       .delete();
   },
   getWatchList(db, user_id) {
-    return db('anime_watchlists AS show')
+    return db('anime_watchlists')
       .select('*')
       .where({ user_id });
+  },
+  insertEpisodeNumber(db, data) {
+    return db('anime_watchlists')
+      .where('title', data.title)
+      .where('user_id', data.user_id)
+      .update('episode_number', data.episode_number);
   }
 };
 
