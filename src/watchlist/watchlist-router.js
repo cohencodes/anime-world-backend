@@ -17,10 +17,25 @@ watchListRouter
       image_url
     };
 
-    WatchListService.insertShow(req.app.get('db'), newEntry)
-      .then(show => {
-        console.log('show response', show);
-        return res.status(201).json(WatchListService.serializeShow(show));
+    for (const [key, value] of Object.entries(newEntry)) {
+      if (value == null) {
+        return res.status(400).json({
+          error: `Missing ${key} in request body`
+        });
+      }
+    }
+
+    WatchListService.getWatchList(req.app.get('db'), user_id)
+      .then(watchlist => {
+        const checkIfExists = watchlist.filter(show => show.title === title);
+        if (checkIfExists.length > 0) {
+          return res.status(400).json({
+            error: `This is already in your watchlist!`
+          });
+        }
+        WatchListService.insertShow(req.app.get('db'), newEntry).then(show => {
+          return res.status(201).json(WatchListService.serializeShow(show));
+        });
       })
       .catch(next);
   });
