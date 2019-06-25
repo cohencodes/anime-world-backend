@@ -44,7 +44,6 @@ watchListRouter
   .all(requireAuth)
   .route('/:user_id')
   .get((req, res, next) => {
-    console.log('req: ', req.params);
     const { user_id } = req.params;
     WatchListService.getWatchList(req.app.get('db'), user_id)
       .then(watchList => {
@@ -64,8 +63,6 @@ watchListRouter
       episode_number,
       title
     };
-
-    console.log('data is: ', data);
 
     WatchListService.insertEpisodeNumber(req.app.get('db'), data)
       .then(episode => {

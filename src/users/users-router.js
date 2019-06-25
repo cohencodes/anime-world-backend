@@ -7,7 +7,6 @@ const jsonBodyParser = express.json();
 
 usersRouter.post('/', jsonBodyParser, (req, res, next) => {
   const { user_name, password } = req.body;
-  console.log('password', password);
 
   for (const field of ['user_name', 'password']) {
     if (!req.body[field]) {
@@ -18,7 +17,6 @@ usersRouter.post('/', jsonBodyParser, (req, res, next) => {
   }
 
   const passwordError = UsersService.validatePassword(password);
-  console.log('passwordError', passwordError);
 
   if (passwordError) {
     return res.status(400).json({ error: passwordError });
