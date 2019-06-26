@@ -27,11 +27,22 @@ forumRouter
       }
     }
 
-    console.log('new comment', newComment);
-
     ForumService.insertComment(req.app.get('db'), newComment)
       .then(comment => {
         return res.status(204).json(comment);
+      })
+      .catch(next);
+  });
+
+forumRouter
+  .all(requireAuth)
+  .route('/:user_id/:comment_id')
+  .delete(jsonBodyParser, (req, res, next) => {
+    const { comment_id } = req.body;
+
+    ForumService.deleteComment(req.app.get('db'), comment_id)
+      .then(comment => {
+        return res.status(202).json(comment);
       })
       .catch(next);
   });

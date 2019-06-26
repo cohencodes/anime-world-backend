@@ -15,10 +15,9 @@ const ForumService = {
       .returning('*')
       .then(([comment]) => comment);
   },
-  deleteShow(db, data) {
-    return db('anime_watchlists')
-      .where('user_id', data.user_id)
-      .where('title', data.title)
+  deleteComment(db, comment_id) {
+    return db('anime_forum')
+      .where('id', comment_id)
       .delete();
   },
   getComments(db, title) {
@@ -27,7 +26,7 @@ const ForumService = {
       .where({ title });
   },
   insertEpisodeNumber(db, data) {
-    return db('anime_watchlists')
+    return db('anime_forum')
       .where('title', data.title)
       .where('user_id', data.user_id)
       .update('episode_number', data.episode_number);
