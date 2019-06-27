@@ -73,31 +73,31 @@ function makeCommentsArray(users) {
       id: 1,
       user_id: users[0].id,
       user_name: 'test-user-1',
-      title: 'Fourth test post!',
+      title: 'Naruto',
       comment: 'First test comment!',
       date_created: new Date('2029-01-22T16:28:32.615Z')
     },
     {
-      id: 1,
+      id: 2,
       user_id: users[1].id,
       user_name: 'test-user-2',
-      title: 'Fourth test post!',
+      title: 'Dragon Ball Z',
       comment: 'First test comment!',
       date_created: new Date('2029-01-22T16:28:32.615Z')
     },
     {
-      id: 1,
+      id: 3,
       user_id: users[2].id,
       user_name: 'test-user-3',
-      title: 'Fourth test post!',
+      title: 'Full Metal Alchemist',
       comment: 'First test comment!',
       date_created: new Date('2029-01-22T16:28:32.615Z')
     },
     {
-      id: 1,
+      id: 4,
       user_id: users[3].id,
       user_name: 'test-user-4',
-      title: 'Fourth test post!',
+      title: 'Akame Ga Kill',
       comment: 'First test comment!',
       date_created: new Date('2029-01-22T16:28:32.615Z')
     }
@@ -152,7 +152,7 @@ function cleanTables(db) {
   );
 }
 
-function seedWatchListsTables(db, users, watchlists) {
+function seedWatchListsTables(db, users, watchlists, comments = []) {
   // use a transaction to group the queries and auto rollback on any failure
   return db.transaction(async trx => {
     await seedUsers(trx, users);
@@ -161,6 +161,13 @@ function seedWatchListsTables(db, users, watchlists) {
     await trx.raw(`SELECT setval('anime_watchlists_id_seq', ?)`, [
       watchlists[watchlists.length - 1].id
     ]);
+    // only insert comments if there are some, also update the sequence counter
+    if (comments.length) {
+      await trx.into('anime_forum').insert(comments);
+      await trx.raw(`SELECT setval('anime_forum_id_seq', ?)`, [
+        comments[comments.length - 1].id
+      ]);
+    }
   });
 }
 
