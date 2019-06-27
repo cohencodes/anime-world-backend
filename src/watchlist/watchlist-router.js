@@ -33,9 +33,11 @@ watchListRouter
             error: `This is already in your watchlist!`
           });
         }
-        WatchListService.insertShow(req.app.get('db'), newEntry).then(show => {
-          return res.status(201).json(WatchListService.serializeShow(show));
-        });
+        WatchListService.insertShow(req.app.get('db'), newEntry)
+          .then(show => {
+            return res.status(201).json(WatchListService.serializeShow(show));
+          })
+          .catch(next);
       })
       .catch(next);
   });
